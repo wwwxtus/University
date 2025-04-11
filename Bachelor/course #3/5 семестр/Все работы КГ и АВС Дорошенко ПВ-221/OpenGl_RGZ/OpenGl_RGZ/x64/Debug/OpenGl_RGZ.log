@@ -1,0 +1,35 @@
+﻿  lighting_and_textures.cpp
+  models.cpp
+  OpenGl_RGZ.cpp
+  test_SOIL.cpp
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\test_SOIL.cpp(227,29): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\test_SOIL.cpp(310,15): warning C4244: return: преобразование "WPARAM" в "int", возможна потеря данных
+  view_and_projection.cpp
+  Создание кода...
+  image_DXT.c
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_DXT.c(93,7): warning C4047: =: "FILE *" отличается по уровням косвенного обращения от "errno_t"
+  image_helper.c
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_helper.c(325,17): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_helper.c(366,13): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_helper.c(373,20): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_helper.c(415,13): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\image_helper.c(422,20): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+  SOIL.c
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\SOIL.c(1728,36): warning C4018: <=: несоответствие типов со знаком и без знака
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\SOIL.c(1738,19): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\SOIL.c(1874,39): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+  stb_image_aug.c
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\stbi_DDS_aug_c.h(362,19): warning C4018: >: несоответствие типов со знаком и без знака
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\stbi_DDS_aug_c.h(366,19): warning C4018: >: несоответствие типов со знаком и без знака
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\stbi_DDS_aug_c.h(390,19): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Vova\source\repos\OpenGl_RGZ\src\stbi_DDS_aug_c.h(427,19): warning C4018: <: несоответствие типов со знаком и без знака
+  Создание кода...
+OpenGl_RGZ.obj : error LNK2005: "float rotationX" (?rotationX@@3MA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "float rotationY" (?rotationY@@3MA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "float rotationZ" (?rotationZ@@3MA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "float scale" (?scale@@3MA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "bool boardRotated" (?boardRotated@@3_NA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "bool isDragging" (?isDragging@@3_NA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "int lastX" (?lastX@@3HA) уже определен в lighting_and_textures.obj
+OpenGl_RGZ.obj : error LNK2005: "int lastY" (?lastY@@3HA) уже определен в lighting_and_textures.obj
+C:\Users\Vova\source\repos\OpenGl_RGZ\x64\Debug\OpenGl_RGZ.exe : fatal error LNK1169: обнаружен многократно определенный символ - один или более

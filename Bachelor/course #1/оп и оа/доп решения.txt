@@ -1,0 +1,31 @@
+Задача 2
+#include <stdio.h>
+
+int main() {
+    int t;
+    scanf("%d", &t);
+    
+    for (int i = 1; i <= t; i++) {
+        int n;
+        scanf("%d", &n);
+
+        int res = n / 3;
+        int c1, c2;
+        if (n % 3 != 0) {
+            if (res * 2 + res + 1 == n) {
+                c1 = res + 1;
+                c2 = res;
+            } else {
+                c1 = res;
+                c2 = res + 1;
+            }
+        } else {
+            c1 = res;
+            c2 = res;
+        }
+
+        printf("%d %d\n", c1, c2);
+    }
+
+    return 0;
+}

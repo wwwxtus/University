@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+typedef struct Matrix {
+    int **values;  // элементы матрицы
+    int nRows;     // количество рядов
+    int nCols;     // количество столбцов
+} Matrix;
+
+typedef struct Position {
+    int rowIndex;  // номер строки
+    int colIndex;  // номер столбца
+} Position;
+
+
+#define N 3
+#define M 2
+
+void inputMatrix(Matrix a) {
+    for (int i = 0; i < a.nRows; i++)
+        for (int j = 0; j < a.nCols; j++)
+            scanf("%d", &a.values[i][j]);
+}
+
+void inputArrayOfMatrix(Matrix *a, int n) {
+    for (int i = 0; i < n; i++)
+        inputMatrix(a[i]);
+}
+
+void outputMatrix(Matrix a) {
+    for (int i = 0; i < a.nRows; i++) {
+        for (int j = 0; j < a.nCols; j++)
+            printf("%d ", a.values[i][j]);
+        printf("\n");
+    }
+}
+
+Matrix getMatrix(int nRows, int nCols) {
+    int **a = (int**)malloc(sizeof(int*) * nRows);
+    for (int i = 0; i < nRows; i++)
+        a[i] = (int*)malloc(sizeof(int) * nCols);
+    return (Matrix){a, nRows, nCols};
+}
+
+Matrix* getArrayOfMatrix(int k, int n, int m) {
+    Matrix *a = (Matrix*)malloc(sizeof(Matrix)*k);
+    for (int i = 0; i < k; i++)
+        a[i] = getMatrix(n, m);
+    return a;
+}
+
+void freeMatrix(Matrix a) {
+    for (int i = 0; i < a.nRows; i++)
+        free(a.values[i]);
+    free(a.values);
+}
+
+void freeArrayOfMatrix(Matrix *a, int k) {
+    for (int i = 0; i < k; i++)
+        freeMatrix(a[i]);
+    return free(a);
+}
+
+void swap_pointers(int **a, int **b) {
+    int *t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void swapRows(Matrix a, int i1, int i2) {
+    assert(0 <= i1 && i1 < a.nRows);
+    assert(0 <= i2 && i2 < a.nRows);
+
+    swap_pointers(&a.values[i1], &a.values[i2]);
+}
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void swapCols(Matrix a, int j1, int j2) {
+    assert(0 <= j1 && j1 < a.nRows);
+    assert(0 <= j2 && j2 < a.nRows);
+
+    for (int i = 0; i < a.nRows; i++)
+        swap(&a.values[i][j1], &a.values[i][j2]);
+}
+
+void deleteLastRow(Matrix *a) {
+    free(a->values[a->nRows - 1]);
+    a->nRows--;
+}
+
+int main() {
+    int n = 3;
+    int m = 2;
+
+    Matrix a = getMatrix(n, m);
+    inputMatrix(a);
+
+    deleteLastRow(&a);
+
+    outputMatrix(a);
+    freeMatrix(a);
+
+    return 0;
+}
