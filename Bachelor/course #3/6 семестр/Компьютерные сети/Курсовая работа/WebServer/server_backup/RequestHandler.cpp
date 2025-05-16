@@ -6,6 +6,17 @@
 #include <string.h>
 #include <map>
 
+std::string get404Page() {
+    std::ifstream file("static/404.html");
+    if (file.is_open()) {
+        std::stringstream ss;
+        ss << file.rdbuf();
+        return ss.str();
+    }
+    return "<html><body><h1>404 Not Found</h1></body></html>";
+}
+
+
 void sendResponse(int fd, const std::string& content, const std::string& contentType = "text/html") {
     std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.size()) +
                            "\r\nContent-Type: " + contentType + "\r\n\r\n" + content;
@@ -127,7 +138,8 @@ void handleRawRequest(const std::string& request, int fd, SSL* ssl = nullptr) {
     req >> method >> path;
 
     std::cout << "[INFO] Received request: method = " << method << ", path = " << path << std::endl;
-
+    std::string notFound = get404Page();
+    
     if (method == "GET") {
         std::string filePath = "static" + (path == "/" ? "/index.html" : path);
         std::ifstream file(filePath, std::ios::binary);
@@ -147,32 +159,32 @@ void handleRawRequest(const std::string& request, int fd, SSL* ssl = nullptr) {
             else
                 sendResponse(fd, content, contentType);
         } else {
-            std::string errorPage = "<html><body><h1>404 Not Found</h1></body></html>";
             if (ssl)
-                sendResponse(ssl, errorPage);
+                sendResponse(ssl, notFound);
             else
-                sendResponse(fd, errorPage);
+                sendResponse(fd, notFound);
         }
-    } else if (method == "POST" && path == "/submit") {
-        size_t pos = request.find("\r\n\r\n");
-        if (pos != std::string::npos) {
-            std::string postData = request.substr(pos + 4);
-            std::cout << "[INFO] Received POST data: " << postData << std::endl;
+    } else if (method == "POST") {
+        if (path == "/submit") {
+            std::string postData = request.substr(request.find("\r\n\r\n") + 4);
             std::string html = parsePostData(postData);
             if (ssl)
                 sendResponse(ssl, html);
             else
                 sendResponse(fd, html);
         } else {
-            std::cerr << "[ERROR] Malformed POST request" << std::endl;
+            // Неверный POST путь — отдаем 404
+            if (ssl)
+                sendResponse(ssl, notFound);
+            else
+                sendResponse(fd, notFound);
         }
     } else {
-        std::cerr << "[WARN] Unknown request: method = " << method << ", path = " << path << std::endl;
-        std::string errorPage = "<html><body><h1>404 Not Found</h1></body></html>";
+        std::string notFound = get404Page();
         if (ssl)
-            sendResponse(ssl, errorPage);
+            sendResponse(ssl, notFound);
         else
-            sendResponse(fd, errorPage);
+            sendResponse(fd, notFound);
     }
 }
 
