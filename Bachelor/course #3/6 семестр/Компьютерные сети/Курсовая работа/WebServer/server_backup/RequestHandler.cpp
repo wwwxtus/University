@@ -18,8 +18,7 @@ std::string get404Page() {
 }
 
 void sendResponse(int fd, const std::string& content, const std::string& contentType = "text/html") {
-    std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.size()) +
-                           "\r\nContent-Type: " + contentType + "\r\n\r\n" + content;
+    std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.size()) + "\r\nContent-Type: " + contentType + "\r\n\r\n" + content;
     if (send(fd, response.c_str(), response.size(), 0) == -1) {
         std::cerr << "[ERROR] Failed to send response via socket" << std::endl;
     } else {
@@ -28,8 +27,7 @@ void sendResponse(int fd, const std::string& content, const std::string& content
 }
 
 void sendResponse(SSL* ssl, const std::string& content, const std::string& contentType = "text/html") {
-    std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.size()) +
-                           "\r\nContent-Type: " + contentType + "\r\n\r\n" + content;
+    std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(content.size()) + "\r\nContent-Type: " + contentType + "\r\n\r\n" + content;
     if (SSL_write(ssl, response.c_str(), response.size()) <= 0) {
         std::cerr << "[ERROR] Failed to send response via SSL" << std::endl;
     } else {
@@ -103,10 +101,12 @@ void handleRawRequest(const std::string& request, int fd, SSL* ssl = nullptr) {
     if (method == "GET") {
         if (path == "/time") {
             std::string dynamicContent = generateDynamicPage(path);
-            if (ssl)
+            if (ssl) {
                 sendResponse(ssl, dynamicContent);
-            else
+            }
+            else {
                 sendResponse(fd, dynamicContent);
+            }
             return;
         }
 
@@ -118,20 +118,26 @@ void handleRawRequest(const std::string& request, int fd, SSL* ssl = nullptr) {
             std::string content = ss.str();
 
             std::string contentType = "text/html";
-            if (filePath.size() >= 4 && filePath.compare(filePath.size()-4, 4, ".png") == 0) contentType = "image/png";
-            else if (filePath.size() >= 4 && (filePath.compare(filePath.size()-4, 4, ".jpg") == 0 || filePath.compare(filePath.size()-5, 5, ".jpeg") == 0)) contentType = "image/jpeg";
-            else if (filePath.size() >= 4 && filePath.compare(filePath.size()-4, 4, ".css") == 0) contentType = "text/css";
-            else if (filePath.size() >= 3 && filePath.compare(filePath.size()-3, 3, ".js") == 0) contentType = "application/javascript";
-
-            if (ssl)
+            if (filePath.size() >= 4 && filePath.compare(filePath.size()-4, 4, ".png") == 0) {
+                contentType = "image/png";
+            } else if (filePath.size() >= 4 && (filePath.compare(filePath.size()-4, 4, ".jpg") == 0 || filePath.compare(filePath.size()-5, 5, ".jpeg") == 0)) {
+                contentType = "image/jpeg";
+            } else if (filePath.size() >= 4 && filePath.compare(filePath.size()-4, 4, ".css") == 0) {
+                contentType = "text/css";
+            } else if (filePath.size() >= 3 && filePath.compare(filePath.size()-3, 3, ".js") == 0) {
+                contentType = "application/javascript";
+            }
+            if (ssl) {
                 sendResponse(ssl, content, contentType);
-            else
+            } else {
                 sendResponse(fd, content, contentType);
+            }
         } else {
-            if (ssl)
+            if (ssl) {
                 sendResponse(ssl, notFound);
-            else
+            } else {
                 sendResponse(fd, notFound);
+            }
         }
     } else if (method == "POST") {
         if (path == "/submit") {
@@ -139,27 +145,31 @@ void handleRawRequest(const std::string& request, int fd, SSL* ssl = nullptr) {
             if (pos != std::string::npos) {
                 std::string postData = request.substr(pos + 4);
                 std::string html = parsePostData(postData);
-                if (ssl)
+                if (ssl) {
                     sendResponse(ssl, html);
-                else
+                } else {
                     sendResponse(fd, html);
+                }
             } else {
-                if (ssl)
+                if (ssl) {
                     sendResponse(ssl, notFound);
-                else
+                } else {
                     sendResponse(fd, notFound);
+                }
             }
         } else {
-            if (ssl)
+            if (ssl) {
                 sendResponse(ssl, notFound);
-            else
+            } else {
                 sendResponse(fd, notFound);
+            }
         }
     } else {
-        if (ssl)
+        if (ssl) {
             sendResponse(ssl, notFound);
-        else
+        } else {
             sendResponse(fd, notFound);
+        }
     }
 }
 

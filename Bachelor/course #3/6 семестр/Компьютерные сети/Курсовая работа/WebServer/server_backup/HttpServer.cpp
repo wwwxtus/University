@@ -6,7 +6,10 @@
 
 HttpServer::HttpServer(int port, bool useSSL) : port(port), useSSL(useSSL), pool(4) {
     setupSocket();
-    if (useSSL) ssl_ctx = initSSL("cert.pem", "key.pem");
+    if (useSSL) {
+        ssl_ctx = initSSL("cert.pem", "key.pem");
+
+    }
 }
 
 void HttpServer::setupSocket() {
